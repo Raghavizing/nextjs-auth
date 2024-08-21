@@ -20,9 +20,10 @@ export async function POST(request:NextRequest){
                 password:hashedPassword
             })
             await newUser.save();
+            return NextResponse.json({message:"Signup Successful", success:true});
         }
     }
     catch(error:any){
-        console.log(NextResponse.json({error:error.message}))
+        console.log(NextResponse.json({error:error.message, status:"500"}))
     }
 }
