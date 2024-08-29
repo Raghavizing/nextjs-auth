@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import Router, { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { sendMail } from "@/helpers/mailer";
 export default function LoginPage() {
     const router = useRouter();
     const [user, setUser] = useState({
@@ -36,9 +37,13 @@ export default function LoginPage() {
         try {
             setLoading(true);
             const res = await axios.post("/api/users/signup", user);
-            console.log(res);
-            toast.success("Signup successful");
+            if(res.data.success){
+            await toast.success("Signup successful");
             router.push("/login");
+            }
+            else{
+                await toast.error(res.data.error);
+            }
         }
         catch (error: any) {
             toast.error("Some error has occurred");

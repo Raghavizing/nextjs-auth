@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const res = NextResponse.json({message:"Logged out successfully",succes:true});
+        const res = NextResponse.json({message:"Logged out successfully",success:true});
         res.cookies.set("token","",{httpOnly:true});
         return res;
     }

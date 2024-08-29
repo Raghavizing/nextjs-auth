@@ -2,6 +2,7 @@ import { Connect } from "@/app/dbConfig/dbConfig";
 import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs"
+import { sendMail } from "@/helpers/mailer";
 Connect();
 export async function POST(request:NextRequest){
     try{
@@ -20,10 +21,11 @@ export async function POST(request:NextRequest){
                 password:hashedPassword
             })
             await newUser.save();
+            await sendMail(newUser.email,"verify",newUser._id);
             return NextResponse.json({message:"Signup Successful", success:true});
         }
     }
     catch(error:any){
-        console.log(NextResponse.json({error:error.message, status:"500"}))
+        return NextResponse.json({error:error.message, status:"500"})
     }
 }
